@@ -27,4 +27,3 @@ describe('POST /stock', function() {
       .expect(200, request1, done);
   });
 });
-
