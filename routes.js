@@ -1,6 +1,5 @@
 
-module.exports = function(repository) {
-  var bookRepository = repository;
+module.exports = function(bookRepository) {
   return {
     handleStockGet: (req, res, next) => {
       bookRepository.findOne(req.params.id).then( (doc) => {
@@ -22,4 +21,4 @@ module.exports = function(repository) {
         });
     }
   }
-}
+};
