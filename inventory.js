@@ -2,9 +2,7 @@
 
 var express = require('express'),
     bodyParser = require('body-parser'),
-    repository = require('./repository');
-
-var bookRepository = repository();
+    bookRepository = require('./repository');
 
 var app = express();
 app.use(bodyParser.json());
