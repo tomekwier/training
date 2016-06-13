@@ -7,25 +7,6 @@ var express = require('express'),
 var app = express();
 app.use(bodyParser.json());
 
-function createLibrary() {
-  var books = {};
-  return {
-    books: books,
-    add: (isbn, count)  => {
-      if (books.hasOwnProperty(isbn)) {
-        books[isbn] += count;
-      } else {
-        books[isbn] = count;
-      }
-    },
-    getBookCount: (isbn) => {
-      return books[isbn];
-      }
-    }
-  }
-
-var library = createLibrary();
-
 app.use((req, res, next) => {
   console.log('new request at ' + new Date());
   next();
@@ -33,8 +14,14 @@ app.use((req, res, next) => {
 
 app.get('/stock/:id', (req, res, next) => {
   bookRepository.findOne(req.params.id).then( (doc) => {
-    res.json(doc[0]);
-  }).catch(next)
+    if (doc.length == 0) {
+      return Promise.reject({status: 404, message: 'Not found'});
+    } else {
+      res.json(doc[0]);
+    }
+  }).catch((err) => {
+    next(err);
+  } )
 });
 
 app.post('/stock', (req, res, next) => {
@@ -44,23 +31,16 @@ app.post('/stock', (req, res, next) => {
     }).catch(next);  
 });
 
-app.use(function(err, req, res, next) {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
-});
-
-app.use(clidentError);
+app.use(clientError);
 app.use(serverError);
 
-function clidentError(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
+function clientError(err, req, res, next) {
   next(err);
 }
 
 function serverError(err, req, res, next) {
-  console.log(err.stack);
-  res.status(err.status || 500).send('Something broke');
+  console.log(err.status);
+  res.status(err.status || 500).send(err.message);
 }
 
 module.exports = app;

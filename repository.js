@@ -30,7 +30,7 @@ module.exports = {
   },
   findOne: (isbn) => {
     return p.then( (col) => {
-      return col.find({isbn: isbn}, {_id: null}).toArray();
+      return col.find({isbn: isbn}, {_id: null, isbn:null}).toArray();
     })
   }
 }
