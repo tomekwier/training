@@ -42,16 +42,12 @@ app.get('/stock/:id', (req, res, next) => {
 app.post('/stock', (req, res, next) => {
   var bookCount = Number(req.body.count);
   library.add(req.body.isbn, bookCount);
-  res.send(JSON.stringify({isbn: req.body.isbn, count: req.body.count}));
+  res.send(req.body);
 });
 
 app.use(function(err, req, res, next) {
   console.error(err.stack);
   res.status(500).send('Something broke!');
-});
-
-app.listen(3000, function () {
-  console.log('Listening on port 3000');
 });
 
 app.use(clidentError);
@@ -67,3 +63,5 @@ function serverError(err, req, res, next) {
   console.log(err.stack);
   res.status(err.status || 500).send('Something broke');
 }
+
+module.exports = app;
