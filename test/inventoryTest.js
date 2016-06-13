@@ -1,6 +1,24 @@
 var assert = require('assert');
-var app = require('../inventory');
+var application = require('../inventory');
 var request = require('supertest');
+
+var repositoryMock = function () {
+  var books = [];
+  return {
+    stockUp: (isbn, count) => {
+      var book = {isbn: isbn, count: count};
+      books.push(book);
+      return Promise.resolve(book);
+    },
+    findOne: (isbn) => {
+      return books.find((b) => {
+        return b.isbn == isbn;
+      })
+    }
+  }
+};
+
+var app = application(repositoryMock());
 
 describe('Math in JS', () => {
   it ('synchronous', () =>  {

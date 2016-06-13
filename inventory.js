@@ -1,8 +1,7 @@
 'use strict';
 
 var express = require('express'),
-    bodyParser = require('body-parser'),
-    bookRepository = require('./repository');
+    bodyParser = require('body-parser');
 
 var app = express();
 app.use(bodyParser.json());
@@ -28,7 +27,9 @@ app.post('/stock', (req, res, next) => {
   bookRepository.stockUp(req.body.isbn, req.body.count)
     .then( (doc) => {
       res.json(req.body);
-    }).catch(next);  
+    }).catch((err) => {
+    next(err);
+  });
 });
 
 app.use(clientError);
@@ -43,4 +44,9 @@ function serverError(err, req, res, next) {
   res.status(err.status || 500).send(err.message);
 }
 
-module.exports = app;
+var bookRepository;
+
+module.exports = function(repository) {
+  bookRepository = repository;
+  return app;
+};
