@@ -2,7 +2,9 @@
 
 var express = require('express'),
     bodyParser = require('body-parser'),
-    mongodb = require('mongodb').MongoClient;
+    repository = require('./repository');
+
+var bookRepository = repository();
 
 var app = express();
 app.use(bodyParser.json());
@@ -26,44 +28,22 @@ function createLibrary() {
 
 var library = createLibrary();
 
-// Mongo
-var dbUrl = 'mongodb://localhost:30000/library';
-
 app.use((req, res, next) => {
   console.log('new request at ' + new Date());
   next();
 });
 
-var p = mongodb.connect(dbUrl).then((db) => {
-  return db.collection('books');
-});
-
 app.get('/stock/:id', (req, res, next) => {
-  p.then( (col) => {
-    return col.find({isbn: req.params.id}, {_id: null}).toArray();
-  }).then( (doc) => {
+  bookRepository.findOne(req.params.id).then( (doc) => {
     res.json(doc[0]);
   }).catch(next)
 });
 
 app.post('/stock', (req, res, next) => {
-  var bookCount = Number(req.body.count);
-
-  p.then ( (col) => {
-    return col.updateOne(
-      {
-        isbn: req.body.isbn
-      },
-      {
-        isbn: req.body.isbn,
-        count: req.body.count
-      },
-      {
-        upsert: true
-      });
-  }).then( (doc) => {
-    res.json(req.body);
-  }).catch(next);  
+  bookRepository.stockUp(req.body.isbn, req.body.count)
+    .then( (doc) => {
+      res.json(req.body);
+    }).catch(next);  
 });
 
 app.use(function(err, req, res, next) {
