@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "index.js",
+    "start": "node index.js",
     "test": "mocha",
     "lint": "jshint --exclude=node_modules/** **.js",
     "test:xunit": "npm run test -- --reporter xunit"
