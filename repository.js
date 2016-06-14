@@ -3,7 +3,9 @@
 var mongodb = require('mongodb').MongoClient;
 
 // Mongo
-var dbUrl = 'mongodb://localhost:30000/library';
+var dbHost = process.env.MONGODB_URI;
+var dbPort = process.env.DB_PORT || 27017;
+var dbUrl = dbHost + ":" + dbPort;
 
 var p = mongodb.connect(dbUrl, {db: {bufferMaxEntries: 0}}).then((db) => {
   return db.collection('books');
@@ -33,4 +35,4 @@ module.exports = {
       return col.find({isbn: isbn}, {_id: null, isbn:null}).toArray();
     })
   }
-}
+};
