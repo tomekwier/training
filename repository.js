@@ -3,9 +3,7 @@
 var mongodb = require('mongodb').MongoClient;
 
 // Mongo
-var dbHost = process.env.MONGODB_URI;
-var dbPort = process.env.DB_PORT || 27017;
-var dbUrl = dbHost + ":" + dbPort;
+var dbUrl = process.env.MONGODB_URI || 'mongodb://localhost:30000/bookinventory';
 
 var p = mongodb.connect(dbUrl, {db: {bufferMaxEntries: 0}}).then((db) => {
   return db.collection('books');
