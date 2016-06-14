@@ -7,8 +7,8 @@ module.exports = function() {
       return Promise.resolve(book);
     },
     findOne: (isbn) => {
-      return books.find((b) => {
-        return b.isbn == isbn;
+      return books.find((book) => {
+        return book.isbn == isbn;
       })
     }
   }
