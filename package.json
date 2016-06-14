@@ -19,12 +19,13 @@
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
+    "heroin-js": "^1.12.1",
     "jshint": "^2.9.2",
     "mocha": "^2.5.3",
     "supertest": "^1.2.0"
   },
   "engines": {
     "node": "6.2.1",
-    "npm": "3.9.0"
+    "npm": "3.9.3"
   }
 }
