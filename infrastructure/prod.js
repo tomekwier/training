@@ -7,5 +7,4 @@ var prod = {
 };
 
 var prod_merged = _.merge(base.base, prod);
-
 base.configurator(prod_merged);

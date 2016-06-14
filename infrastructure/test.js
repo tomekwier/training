@@ -7,5 +7,4 @@ var test = {
 };
 
 var test_merged = _.merge(base.base, test);
-
 base.configurator(test_merged);
