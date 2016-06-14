@@ -2,11 +2,7 @@ var heroin = require('heroin-js');
 
 var configurator = heroin(process.env.HEROKU_API_TOKEN);
 
-// configurator.export('training-tomek').then((result) => {
-//     console.log(result);
-// });
-
-var prod = { name: 'training-tomek',
+var base = {
     region: 'eu',
     maintenance: false,
     stack: 'cedar-14',
@@ -25,4 +21,7 @@ var prod = { name: 'training-tomek',
     log_drains: []
 };
 
-configurator(prod);
+module.exports = {
+    base: base,
+    configurator: configurator
+};
